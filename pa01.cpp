@@ -3,35 +3,72 @@
 #include <string>
 using namespace std;
 
+string getPlaintext(string filePath);
+int getMatrix(string filePath);
+
 int main(int args, char *argv[]) {
 
     if (args != 3)
     {
         return 0;
     }
+    
+    int key = getMatrix(argv[1]);
+    string thing = getPlaintext(argv[2]);
 
-    string key {argv[1]};
-    //string text {argv[2]};
-    string output;
-    string buffer;
+    return 0;
+}
 
-    ifstream keyFile {key};
-    ifstream textFile {};
+int getMatrix(string filePath) {
 
-    //textStream.open(text);
+    int n;
+
+    ifstream keyFile;
+    keyFile.open(filePath);
 
     if (!keyFile.is_open()) return 0;
 
-    while (!keyFile.eof())
-    {
-        keyFile >> buffer;
-        if (keyFile.eof()) break;
-        output += buffer;
-    }
+    keyFile >> n;
 
-    cout << output << endl;
+    int matrix[n][n];
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            keyFile >> matrix[i][j];
+            cout << matrix[i][j] << endl;
+        }
+    }
 
     keyFile.close();
 
     return 0;
+    
+}
+
+string getPlaintext(string filePath) {
+    string output;
+    char buffer;
+
+    ifstream textFile;
+    textFile.open(filePath);
+
+    if (!textFile.is_open()) return "";
+
+    while (!textFile.eof())
+    {
+        textFile.get(buffer);
+
+        if (textFile.eof()) break;
+
+        if (isalpha(buffer)) {
+            buffer = tolower(buffer);
+            output += buffer;
+        }
+    }
+
+    textFile.close();
+
+    return output;
 }
