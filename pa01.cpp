@@ -3,8 +3,8 @@
 #include <string>
 using namespace std;
 
+int** getMatrix(string filePath);
 string getPlaintext(string filePath);
-int getMatrix(string filePath);
 
 int main(int args, char *argv[]) {
 
@@ -13,38 +13,37 @@ int main(int args, char *argv[]) {
         return 0;
     }
     
-    int key = getMatrix(argv[1]);
-    string thing = getPlaintext(argv[2]);
+    int** key = getMatrix(argv[1]);
+    string text = getPlaintext(argv[2]);
 
     return 0;
 }
 
-int getMatrix(string filePath) {
+int** getMatrix(string filePath) {
 
     int n;
 
     ifstream keyFile;
     keyFile.open(filePath);
 
-    if (!keyFile.is_open()) return 0;
+    if (!keyFile.is_open()) return NULL;
 
     keyFile >> n;
 
-    int matrix[n][n];
+    int** matrix = new int*[n];
 
     for (int i = 0; i < n; i++)
     {
+        matrix[i] = new int[n];
         for (int j = 0; j < n; j++)
         {
             keyFile >> matrix[i][j];
-            cout << matrix[i][j] << endl;
         }
     }
 
     keyFile.close();
 
-    return 0;
-    
+    return matrix;
 }
 
 string getPlaintext(string filePath) {
