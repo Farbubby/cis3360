@@ -1,9 +1,10 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
 using namespace std;
 
-int** getMatrix(string filePath);
+vector<vector<int>> getMatrix(string filePath);
 string getPlaintext(string filePath);
 
 int main(int args, char *argv[]) {
@@ -13,32 +14,34 @@ int main(int args, char *argv[]) {
         return 0;
     }
     
-    int** key = getMatrix(argv[1]);
+    vector<vector<int>> key = getMatrix(argv[1]);
     string text = getPlaintext(argv[2]);
 
     return 0;
 }
 
-int** getMatrix(string filePath) {
+vector<vector<int>> getMatrix(string filePath) {
 
-    int n;
+    int n, buffer;
 
     ifstream keyFile;
     keyFile.open(filePath);
 
-    if (!keyFile.is_open()) return NULL;
+    if (!keyFile.is_open()) return vector<vector<int>>(0);
 
     keyFile >> n;
 
-    int** matrix = new int*[n];
+    vector<vector<int>> matrix;
+    vector<int> row;
 
     for (int i = 0; i < n; i++)
     {
-        matrix[i] = new int[n];
         for (int j = 0; j < n; j++)
         {
-            keyFile >> matrix[i][j];
+            keyFile >> buffer;
+            row.push_back(buffer);
         }
+        matrix.push_back(row);
     }
 
     keyFile.close();
