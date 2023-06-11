@@ -8,7 +8,8 @@ vector<vector<int>> getMatrix(string filePath);
 string getPlaintext(string filePath);
 string convert(vector<vector<int>> key, string plaintext);
 
-int main(int args, char *argv[]) {
+int main(int args, char *argv[]) 
+{
 
     if (args != 3)
     {
@@ -16,13 +17,14 @@ int main(int args, char *argv[]) {
     }
     
     vector<vector<int>> key = getMatrix(argv[1]);
-    // string text = getPlaintext(argv[2]);
+    string text = getPlaintext(argv[2]);
     convert(key, "no");
 
     return 0;
 }
 
-vector<vector<int>> getMatrix(string filePath) {
+vector<vector<int>> getMatrix(string filePath) 
+{
 
     int n, buffer;
 
@@ -51,7 +53,9 @@ vector<vector<int>> getMatrix(string filePath) {
     return matrix;
 }
 
-string getPlaintext(string filePath) {
+string getPlaintext(string filePath) 
+{
+
     string output;
     char buffer;
 
@@ -77,12 +81,13 @@ string getPlaintext(string filePath) {
     return output;
 }
 
-string convert(vector<vector<int>> key, string plaintext) {
+string convert(vector<vector<int>> key, string plaintext) 
+{
 
     vector<int> word;
     vector<int> output;
-    int result;
     int n = key.size();
+    string buffer = "";
 
     for (int i = 0; i < n; i++)
     {
@@ -91,7 +96,7 @@ string convert(vector<vector<int>> key, string plaintext) {
 
     for (int i = 0; i < n; i++)
     {
-        result = 0;
+        int result = 0;
         for (int j = 0; j < n; j++)
         {
             result += key[i][j] * word[j];
@@ -101,8 +106,10 @@ string convert(vector<vector<int>> key, string plaintext) {
 
     for (int i = 0; i < n; i++)
     {
-        cout << char(output[i] + 'a') << " ";
+        buffer += char(output[i] + 'a');
     }
+
+    cout << buffer << endl;
 
     return "";
 }
