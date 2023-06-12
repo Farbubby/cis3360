@@ -1,3 +1,23 @@
+/*=============================================================================
+| Assignment: pa01 - Encrypting a plaintext file using the Hill cipher
+|
+| Author: Farhan Mahbub
+| Language: C++
+|
+| To Compile: g++ -o pa01 pa01.cpp
+|
+| To Execute: C++ -> ./pa01 kX.txt pX.txt
+|             where kX.txt is the keytext file
+|             and pX.txt is plaintext file
+|
+| Note: All input files are simple 8 bit ASCII input
+|
+| Class: CIS3360 - Security in Computing - Summer 2023
+| Instructor: McAlpin
+| Due Date: per assignment
+|
++=============================================================================*/
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -132,3 +152,12 @@ string encrpyt(vector<vector<int>> key, string plaintext)
 
     return output;
 }
+
+/*=============================================================================
+| I Farhan Mahbub (fa203667) affirm that this program is
+| entirely my own work and that I have neither developed my code together with
+| any another person, nor copied any code from any other person, nor permitted
+| my code to be copied or otherwise used by any other person, nor have I
+| copied, modified, or otherwise used programs created by others. I acknowledge
+| that any violation of the above terms will be treated as academic dishonesty.
++=============================================================================*/
