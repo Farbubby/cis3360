@@ -5,8 +5,9 @@
 using namespace std;
 
 vector<vector<int>> getMatrix(string filePath);
-string getPlaintext(string filePath);
-string convert(vector<vector<int>> key, string plaintext);
+string getPlaintext(string filePath, int n);
+string matrixMultiply(vector<vector<int>> key, string split);
+string encrpyt(vector<vector<int>> key, string plaintext);
 
 int main(int args, char *argv[]) 
 {
@@ -17,8 +18,8 @@ int main(int args, char *argv[])
     }
     
     vector<vector<int>> key = getMatrix(argv[1]);
-    string text = getPlaintext(argv[2]);
-    convert(key, "no");
+    string text = getPlaintext(argv[2], key.size());
+    string output = encrpyt(key, text);
 
     return 0;
 }
@@ -53,7 +54,7 @@ vector<vector<int>> getMatrix(string filePath)
     return matrix;
 }
 
-string getPlaintext(string filePath) 
+string getPlaintext(string filePath, int n)
 {
 
     string output;
@@ -76,12 +77,17 @@ string getPlaintext(string filePath)
         }
     }
 
+    while (output.length() % n != 0)
+    {
+        output += 'x';
+    }
+
     textFile.close();
 
     return output;
 }
 
-string convert(vector<vector<int>> key, string plaintext) 
+string matrixMultiply(vector<vector<int>> key, string split)
 {
 
     vector<int> word;
@@ -91,7 +97,7 @@ string convert(vector<vector<int>> key, string plaintext)
 
     for (int i = 0; i < n; i++)
     {
-        word.push_back(plaintext[i] - 'a');
+        word.push_back(split[i] - 'a');
     }
 
     for (int i = 0; i < n; i++)
@@ -109,7 +115,20 @@ string convert(vector<vector<int>> key, string plaintext)
         buffer += char(output[i] + 'a');
     }
 
-    cout << buffer << endl;
+    return buffer;
+}
 
-    return "";
+string encrpyt(vector<vector<int>> key, string plaintext)
+{
+    int n = key.size();
+    int length = plaintext.length();
+    string output = "";
+
+    for (int i = 0; i < length; i += n)
+    {
+        string split = plaintext.substr(i, n);
+        output += matrixMultiply(key, split);
+    }
+
+    return output;
 }
