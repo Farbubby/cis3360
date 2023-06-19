@@ -150,42 +150,37 @@ string encrpyt(vector<vector<int>> key, string plaintext)
 void printFormat(vector<vector<int>> key, string plaintext, string ciphertext) 
 {
     int i, j, n = key.size(), countPlain = 0, countCipher = 0;
-    ofstream outputFile;
 
-    outputFile.open("./output.txt");
-
-    outputFile << endl << "Key matrix:" << endl;
+    cout << endl << "Key matrix:" << endl;
 
     for (i = 0; i < n; i++) 
     {
         for (j = 0; j < n; j++) 
         {
-            outputFile << "\t" << key[i][j];
-            if (j == n - 1) outputFile << endl;
+            cout << " " << key[i][j];
+            if (j == n - 1) cout << endl;
         }
     }
 
-    outputFile << endl << "Plaintext:" << endl;
+    cout << endl << "Plaintext:" << endl;
 
     for (i = 0; i < plaintext.length(); i++)
     {
-        outputFile << plaintext[i];
+        cout << plaintext[i];
         countPlain++;
-        if (countPlain % 80 == 0) outputFile << endl;
+        if (countPlain % 80 == 0) cout << endl;
     }
 
-    outputFile << endl << endl << "Ciphertext:" << endl;
+    cout << endl << endl << "Ciphertext:" << endl;
 
     for (i = 0; i < ciphertext.length(); i++)
     {
-        outputFile << ciphertext[i];
+        cout << ciphertext[i];
         countCipher++;
-        if (countCipher % 80 == 0) outputFile << endl;
+        if (countCipher % 80 == 0) cout << endl;
     }
 
-    outputFile << endl;
-
-    outputFile.close();
+    cout << endl;
 }
 
 /*=============================================================================
