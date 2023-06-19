@@ -32,10 +32,7 @@ void printFormat(vector<vector<int>> key, string plaintext, string ciphertext);
 
 int main(int args, char *argv[]) 
 {
-    if (args != 3)
-    {
-        return 0;
-    }
+    if (args != 3) return 0;
     
     vector<vector<int>> key = getMatrix(argv[1]);
     string plaintext = getPlaintext(argv[2], key.size());
