@@ -157,7 +157,7 @@ void printFormat(vector<vector<int>> key, string plaintext, string ciphertext)
     {
         for (j = 0; j < n; j++) 
         {
-            cout << " " << key[i][j];
+            cout << "\t" << key[i][j];
             if (j == n - 1) cout << endl;
         }
     }
