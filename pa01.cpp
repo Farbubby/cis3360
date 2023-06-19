@@ -28,25 +28,26 @@ vector<vector<int>> getMatrix(string filePath);
 string getPlaintext(string filePath, int n);
 string matrixMultiply(vector<vector<int>> key, string split);
 string encrpyt(vector<vector<int>> key, string plaintext);
+void printFormat(vector<vector<int>> key, string plaintext, string ciphertext);
 
 int main(int args, char *argv[]) 
 {
-
     if (args != 3)
     {
         return 0;
     }
     
     vector<vector<int>> key = getMatrix(argv[1]);
-    string text = getPlaintext(argv[2], key.size());
-    string output = encrpyt(key, text);
+    string plaintext = getPlaintext(argv[2], key.size());
+    string ciphertext = encrpyt(key, plaintext);
+
+    printFormat(key, plaintext, ciphertext);
 
     return 0;
 }
 
 vector<vector<int>> getMatrix(string filePath) 
 {
-
     int n, buffer;
 
     ifstream keyFile;
@@ -76,7 +77,6 @@ vector<vector<int>> getMatrix(string filePath)
 
 string getPlaintext(string filePath, int n)
 {
-
     string output;
     char buffer;
 
@@ -109,28 +109,26 @@ string getPlaintext(string filePath, int n)
 
 string matrixMultiply(vector<vector<int>> key, string split)
 {
-
-    vector<int> word;
-    vector<int> output;
-    int n = key.size();
+    int i, j, n = key.size();
+    vector<int> word, output;
     string buffer = "";
 
-    for (int i = 0; i < n; i++)
+    for (i = 0; i < n; i++)
     {
         word.push_back(split[i] - 'a');
     }
 
-    for (int i = 0; i < n; i++)
+    for (i = 0; i < n; i++)
     {
         int result = 0;
-        for (int j = 0; j < n; j++)
+        for (j = 0; j < n; j++)
         {
             result += key[i][j] * word[j];
         }
         output.push_back(result%26);
     }
 
-    for (int i = 0; i < n; i++)
+    for (i = 0; i < n; i++)
     {
         buffer += char(output[i] + 'a');
     }
@@ -140,17 +138,57 @@ string matrixMultiply(vector<vector<int>> key, string split)
 
 string encrpyt(vector<vector<int>> key, string plaintext)
 {
-    int n = key.size();
-    int length = plaintext.length();
+    int i, n = key.size(), length = plaintext.length();
     string output = "";
 
-    for (int i = 0; i < length; i += n)
+    for (i = 0; i < length; i += n)
     {
         string split = plaintext.substr(i, n);
         output += matrixMultiply(key, split);
     }
 
     return output;
+}
+
+void printFormat(vector<vector<int>> key, string plaintext, string ciphertext) 
+{
+    int i, j, n = key.size(), countPlain = 0, countCipher = 0;
+    ofstream outputFile;
+
+    outputFile.open("./output.txt");
+
+    outputFile << endl << "Key matrix:" << endl;
+
+    for (i = 0; i < n; i++) 
+    {
+        for (j = 0; j < n; j++) 
+        {
+            outputFile << "\t" << key[i][j];
+            if (j == n - 1) outputFile << endl;
+        }
+    }
+
+    outputFile << endl << "Plaintext:" << endl;
+
+    for (i = 0; i < plaintext.length(); i++)
+    {
+        outputFile << plaintext[i];
+        countPlain++;
+        if (countPlain % 80 == 0) outputFile << endl;
+    }
+
+    outputFile << endl << endl << "Ciphertext:" << endl;
+
+    for (i = 0; i < ciphertext.length(); i++)
+    {
+        outputFile << ciphertext[i];
+        countCipher++;
+        if (countCipher % 80 == 0) outputFile << endl;
+    }
+
+    outputFile << endl;
+
+    outputFile.close();
 }
 
 /*=============================================================================
