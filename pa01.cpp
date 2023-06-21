@@ -45,7 +45,7 @@ int main(int args, char *argv[])
 
 vector<vector<int>> getMatrix(string filePath) 
 {
-    int n, buffer;
+    int i, j, n, buffer;
 
     ifstream keyFile;
     keyFile.open(filePath);
@@ -56,10 +56,10 @@ vector<vector<int>> getMatrix(string filePath)
 
     vector<vector<int>> matrix;
 
-    for (int i = 0; i < n; i++)
+    for (i = 0; i < n; i++)
     {
         vector<int> row;
-        for (int j = 0; j < n; j++)
+        for (j = 0; j < n; j++)
         {
             keyFile >> buffer;
             row.push_back(buffer);
