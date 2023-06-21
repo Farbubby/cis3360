@@ -14,7 +14,7 @@
 |
 | Class: CIS3360 - Security in Computing - Summer 2023
 | Instructor: McAlpin
-| Due Date: per assignment
+| Due Date: 6/23/23
 |
 +=============================================================================*/
 
