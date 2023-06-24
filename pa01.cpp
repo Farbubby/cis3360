@@ -32,6 +32,7 @@ void printFormat(vector<vector<int>> key, string plaintext, string ciphertext);
 
 int main(int args, char *argv[]) 
 {
+    // Ensures correct number of arguments
     if (args != 3) return 0;
     
     vector<vector<int>> key = getMatrix(argv[1]);
@@ -52,6 +53,7 @@ vector<vector<int>> getMatrix(string filePath)
 
     if (!keyFile.is_open()) return vector<vector<int>>(0);
 
+    // Gets matrix dimension for n x n matrix
     keyFile >> n;
 
     vector<vector<int>> matrix;
@@ -59,11 +61,13 @@ vector<vector<int>> getMatrix(string filePath)
     for (i = 0; i < n; i++)
     {
         vector<int> row;
+        // Gets n numbers for each row
         for (j = 0; j < n; j++)
         {
             keyFile >> buffer;
             row.push_back(buffer);
         }
+        // Row is complete and pushes to matrix
         matrix.push_back(row);
     }
 
@@ -80,20 +84,25 @@ string getPlaintext(string filePath, int n)
     ifstream textFile;
     textFile.open(filePath);
 
+    // Checks if file is open
     if (!textFile.is_open()) return "";
 
     while (!textFile.eof())
     {
+        // Get next character
         textFile.get(buffer);
 
+        // Checks if end of file
         if (textFile.eof()) break;
 
+        // Only adds to output if character is a letter and lowercase it
         if (isalpha(buffer)) {
             buffer = tolower(buffer);
             output += buffer;
         }
     }
 
+    // Adds padding if necessary
     while (output.length() % n != 0)
     {
         output += 'x';
@@ -110,11 +119,13 @@ string matrixMultiply(vector<vector<int>> key, string split)
     vector<int> word, output;
     string buffer = "";
 
+    // Converts string to 1D vector of integers
     for (i = 0; i < n; i++)
     {
         word.push_back(split[i] - 'a');
     }
 
+    // Multiplies key matrix with word vector with matrix multiplication
     for (i = 0; i < n; i++)
     {
         int result = 0;
@@ -125,6 +136,7 @@ string matrixMultiply(vector<vector<int>> key, string split)
         output.push_back(result%26);
     }
 
+    // Adds result as characters to buffer
     for (i = 0; i < n; i++)
     {
         buffer += char(output[i] + 'a');
@@ -138,6 +150,7 @@ string encrpyt(vector<vector<int>> key, string plaintext)
     int i, n = key.size(), length = plaintext.length();
     string output = "";
 
+    // Splits plaintext into n length substrings and encrypts each substring
     for (i = 0; i < length; i += n)
     {
         string split = plaintext.substr(i, n);
@@ -153,6 +166,7 @@ void printFormat(vector<vector<int>> key, string plaintext, string ciphertext)
 
     cout << endl << "Key matrix:" << endl;
 
+    // Prints key matrix
     for (i = 0; i < n; i++) 
     {
         for (j = 0; j < n; j++) 
@@ -164,6 +178,7 @@ void printFormat(vector<vector<int>> key, string plaintext, string ciphertext)
 
     cout << endl << "Plaintext:" << endl;
 
+    // Prints plaintext
     for (i = 0; i < plaintext.length(); i++)
     {
         cout << plaintext[i];
@@ -173,6 +188,7 @@ void printFormat(vector<vector<int>> key, string plaintext, string ciphertext)
 
     cout << endl << endl << "Ciphertext:" << endl;
 
+    // Prints ciphertext
     for (i = 0; i < ciphertext.length(); i++)
     {
         cout << ciphertext[i];
