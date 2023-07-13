@@ -181,6 +181,8 @@ void printFormat(string text, int checkSumSize) {
     stream << hex << checkSum;
     checkSumString = stream.str();
 
+    cout << endl;
+
     for (int i = 0; i < text.length(); i++) {
         
         cout << text[i];
