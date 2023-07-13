@@ -14,7 +14,7 @@ void addToCheckSum32(int &checkSum, int buffer);
 int checkSum8(string text);
 int checkSum16(string text);
 int checkSum32(string text);
-void printFormat(string text, string checksum);
+void printFormat(string text, int checkSumSize);
 
 int main(int args, char *argv[]) {
     
@@ -23,27 +23,16 @@ int main(int args, char *argv[]) {
     string filePath = argv[1];
     int checkSumSize = stoi(argv[2]);
 
-    string text = readText(filePath, checkSumSize);
+    if (checkSumSize != 8 && checkSumSize != 16 && checkSumSize != 32) {
 
-    if (checkSumSize == 8) {
-
-        cout << hex << checkSum8(text) << endl;
-        return 1;
-    }
-    else if (checkSumSize == 16) {
-        
-        cout << hex << checkSum16(text) << endl;
-        return 1;
-    }
-    else if (checkSumSize == 32) {
-        
-        cout << hex << checkSum32(text) << endl;
-        return 1;
-    }
-    else {
-        cerr << "Invalid checksum type" << endl;
+        cerr << "Valid checksum sizes are 8, 16, or 32" << endl;
         return 0;
+
     }
+
+    string text = readText(filePath, checkSumSize);
+    
+    printFormat(text, checkSumSize);
 }
 
 string readText(string filePath, int checkSumSize) {
@@ -170,5 +159,39 @@ int checkSum32(string text) {
     }
 
     return checkSum;
+
+}
+
+void printFormat(string text, int checkSumSize) {
+
+    int checkSum = 0, count = 0;
+    string checkSumString;
+    stringstream stream;
+
+    if (checkSumSize == 8) {
+        checkSum = checkSum8(text);
+    }
+    else if (checkSumSize == 16) {
+        checkSum = checkSum16(text);
+    }
+    else if (checkSumSize == 32) {
+        checkSum = checkSum32(text);
+    }
+
+    stream << hex << checkSum;
+    checkSumString = stream.str();
+
+    for (int i = 0; i < text.length(); i++) {
+        
+        cout << text[i];
+        count++;
+
+        if (count % 80 == 0) {
+            cout << endl;
+        }
+    }
+
+    cout << endl;
+    cout << checkSumSize << " bit checksum is " << checkSumString << " for all " << text.length() << " chars" << endl;
 
 }
