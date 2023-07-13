@@ -84,28 +84,6 @@ string getHexString(string text) {
     return buffer;
 }
 
-int checkSum8(string text) {
-
-    int checkSum = 0;
-    string hexString = getHexString(text);
-
-    for (int i = 0; i < hexString.length(); i += 2) {
-
-        int buffer = hexToDec(hexString.substr(i, 2));
-        addToCheckSum(checkSum, buffer);
-    }
-
-    return checkSum;
-
-}
-
-void addToCheckSum(int &checkSum, int buffer) {
-    
-    checkSum += buffer;
-    checkSum = checkSum & 255;
-
-}
-
 int hexToDec(string hex) {
 
     int numDigits = hex.length();
@@ -123,4 +101,26 @@ int hexToDec(string hex) {
     }
 
     return dec;
+}
+
+void addToCheckSum(int &checkSum, int buffer) {
+    
+    checkSum += buffer;
+    checkSum &= 0xff;
+
+}
+
+int checkSum8(string text) {
+
+    int checkSum = 0;
+    string hexString = getHexString(text);
+
+    for (int i = 0; i < hexString.length(); i += 2) {
+
+        int buffer = hexToDec(hexString.substr(i, 2));
+        addToCheckSum(checkSum, buffer);
+    }
+
+    return checkSum;
+
 }
