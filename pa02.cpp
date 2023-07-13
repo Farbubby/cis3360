@@ -6,11 +6,13 @@
 using namespace std;
 
 string readText(string filePath, int checkSumSize);
-string checkSum8(string text);
+string getHexString(string text);
+int checkSum8(string text);
 string checkSum16(string text);
 string checkSum32(string text);
-void printFormat(string text, string checksum);
 int hexToDec(string hex);
+void addToCheckSum(int &checkSum, int buffer);
+void printFormat(string text, string checksum);
 
 int main(int args, char *argv[]) {
     
@@ -22,7 +24,8 @@ int main(int args, char *argv[]) {
     string text = readText(filePath, checkSumSize);
 
     if (checkSumSize == 8) {
-        cout << checkSum8(text) << endl;
+
+        cout << hex << checkSum8(text) << endl;
         return 1;
     }
     else if (checkSumSize == 16) {
@@ -63,22 +66,44 @@ string readText(string filePath, int checkSumSize) {
     return text;
 }
 
-string checkSum8(string text) {
+string getHexString(string text) {
 
-    string checkSum = "";
+    string buffer = "";
 
     for (int i = 0; i < text.length(); i++) {
         if (int(text[i]) == 0x0a) {
-            checkSum += "0a";
+            buffer += "0a";
         }
         else {
             stringstream stream;
             stream << hex << int(text[i]);
-            checkSum += stream.str();
+            buffer += stream.str();
         }
     }
 
+    return buffer;
+}
+
+int checkSum8(string text) {
+
+    int checkSum = 0;
+    string hexString = getHexString(text);
+
+    for (int i = 0; i < hexString.length(); i += 2) {
+
+        int buffer = hexToDec(hexString.substr(i, 2));
+        addToCheckSum(checkSum, buffer);
+    }
+
     return checkSum;
+
+}
+
+void addToCheckSum(int &checkSum, int buffer) {
+    
+    checkSum += buffer;
+    checkSum = checkSum & 255;
+
 }
 
 int hexToDec(string hex) {
