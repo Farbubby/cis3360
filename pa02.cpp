@@ -7,11 +7,13 @@ using namespace std;
 
 string readText(string filePath, int checkSumSize);
 string getHexString(string text);
-int checkSum8(string text);
-string checkSum16(string text);
-string checkSum32(string text);
 int hexToDec(string hex);
-void addToCheckSum(int &checkSum, int buffer);
+void addToCheckSum8(int &checkSum, int buffer);
+void addToCheckSum16(int &checkSum, int buffer);
+void addToCheckSum32(int &checkSum, int buffer);
+int checkSum8(string text);
+int checkSum16(string text);
+int checkSum32(string text);
 void printFormat(string text, string checksum);
 
 int main(int args, char *argv[]) {
@@ -30,10 +32,12 @@ int main(int args, char *argv[]) {
     }
     else if (checkSumSize == 16) {
         
+        cout << hex << checkSum16(text) << endl;
         return 1;
     }
     else if (checkSumSize == 32) {
         
+        cout << hex << checkSum32(text) << endl;
         return 1;
     }
     else {
@@ -103,10 +107,24 @@ int hexToDec(string hex) {
     return dec;
 }
 
-void addToCheckSum(int &checkSum, int buffer) {
+void addToCheckSum8(int &checkSum, int buffer) {
     
     checkSum += buffer;
     checkSum &= 0xff;
+
+}
+
+void addToCheckSum16(int &checkSum, int buffer) {
+    
+    checkSum += buffer;
+    checkSum &= 0xffff;
+
+}
+
+void addToCheckSum32(int &checkSum, int buffer) {
+    
+    checkSum += buffer;
+    checkSum &= 0xffffffff;
 
 }
 
@@ -118,7 +136,37 @@ int checkSum8(string text) {
     for (int i = 0; i < hexString.length(); i += 2) {
 
         int buffer = hexToDec(hexString.substr(i, 2));
-        addToCheckSum(checkSum, buffer);
+        addToCheckSum8(checkSum, buffer);
+    }
+
+    return checkSum;
+
+}
+
+int checkSum16(string text) {
+
+    int checkSum = 0;
+    string hexString = getHexString(text);
+
+    for (int i = 0; i < hexString.length(); i += 4) {
+
+        int buffer = hexToDec(hexString.substr(i, 4));
+        addToCheckSum16(checkSum, buffer);
+    }
+
+    return checkSum;
+
+}
+
+int checkSum32(string text) {
+
+    int checkSum = 0;
+    string hexString = getHexString(text);
+
+    for (int i = 0; i < hexString.length(); i += 8) {
+
+        int buffer = hexToDec(hexString.substr(i, 8));
+        addToCheckSum32(checkSum, buffer);
     }
 
     return checkSum;
