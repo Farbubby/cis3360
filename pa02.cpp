@@ -16,18 +16,17 @@ int checkSum16(string text);
 int checkSum32(string text);
 void printFormat(string text, int checkSumSize);
 
-int main(int args, char *argv[]) {
-    
+int main(int args, char *argv[]) 
+{
     if (args != 3) return 0;
 
     string filePath = argv[1];
     int checkSumSize = stoi(argv[2]);
 
-    if (checkSumSize != 8 && checkSumSize != 16 && checkSumSize != 32) {
-
+    if (checkSumSize != 8 && checkSumSize != 16 && checkSumSize != 32) 
+    {
         cerr << "Valid checksum sizes are 8, 16, or 32" << endl;
         return 0;
-
     }
 
     string text = readText(filePath, checkSumSize);
@@ -35,8 +34,8 @@ int main(int args, char *argv[]) {
     printFormat(text, checkSumSize);
 }
 
-string readText(string filePath, int checkSumSize) {
-
+string readText(string filePath, int checkSumSize) 
+{
     string text;
     ifstream inputFile;
 
@@ -44,7 +43,8 @@ string readText(string filePath, int checkSumSize) {
 
     if (!inputFile.is_open()) return "";
 
-    while (!inputFile.eof()) {
+    while (!inputFile.eof()) 
+    {
         string buffer;
         getline(inputFile, buffer);
         text += buffer;
@@ -52,22 +52,27 @@ string readText(string filePath, int checkSumSize) {
 
     text += "\n";
 
-    while ((text.length()*8) % checkSumSize != 0) {
+    while ((text.length()*8) % checkSumSize != 0) 
+    {
         text += "X";
     }
 
     return text;
 }
 
-string getHexString(string text) {
-
+string getHexString(string text) 
+{
     string buffer = "";
 
-    for (int i = 0; i < text.length(); i++) {
-        if (int(text[i]) == 0x0a) {
+    for (int i = 0; i < text.length(); i++) 
+    {
+        if (int(text[i]) == 0x0a) 
+        {
             buffer += "0a";
         }
-        else {
+
+        else 
+        {
             stringstream stream;
             stream << hex << int(text[i]);
             buffer += stream.str();
@@ -77,104 +82,106 @@ string getHexString(string text) {
     return buffer;
 }
 
-int hexToDec(string hex) {
+int hexToDec(string hex) 
+{
+    int numDigits = hex.length(), dec = 0, buffer = 0;
 
-    int numDigits = hex.length();
-    int dec = 0;
-    int buffer = 0;
-
-    for (int i = 0; i < numDigits; i++) {
-        if (tolower(hex[i]) >= 'a' && tolower(hex[i]) <= 'f') {
+    for (int i = 0; i < numDigits; i++) 
+    {
+        if (tolower(hex[i]) >= 'a' && tolower(hex[i]) <= 'f') 
+        {
             buffer = tolower(hex[i]) - 'a' + 10;
         }
-        else {
+
+        else 
+        {
             buffer = hex[i] - '0';
         }
+
         dec = (dec * 16) + buffer;
     }
 
     return dec;
 }
 
-void addToCheckSum8(int &checkSum, int buffer) {
-    
+void addToCheckSum8(int &checkSum, int buffer) 
+{    
     checkSum += buffer;
     checkSum &= 0xff;
-
 }
 
-void addToCheckSum16(int &checkSum, int buffer) {
-    
+void addToCheckSum16(int &checkSum, int buffer) 
+{
     checkSum += buffer;
     checkSum &= 0xffff;
-
 }
 
-void addToCheckSum32(int &checkSum, int buffer) {
-    
+void addToCheckSum32(int &checkSum, int buffer) 
+{ 
     checkSum += buffer;
     checkSum &= 0xffffffff;
-
 }
 
-int checkSum8(string text) {
-
+int checkSum8(string text) 
+{
     int checkSum = 0;
     string hexString = getHexString(text);
 
-    for (int i = 0; i < hexString.length(); i += 2) {
-
+    for (int i = 0; i < hexString.length(); i += 2) 
+    {
         int buffer = hexToDec(hexString.substr(i, 2));
         addToCheckSum8(checkSum, buffer);
     }
 
     return checkSum;
-
 }
 
-int checkSum16(string text) {
-
+int checkSum16(string text) 
+{
     int checkSum = 0;
     string hexString = getHexString(text);
 
-    for (int i = 0; i < hexString.length(); i += 4) {
-
+    for (int i = 0; i < hexString.length(); i += 4) 
+    {
         int buffer = hexToDec(hexString.substr(i, 4));
         addToCheckSum16(checkSum, buffer);
     }
 
     return checkSum;
-
 }
 
-int checkSum32(string text) {
-
+int checkSum32(string text) 
+{
     int checkSum = 0;
     string hexString = getHexString(text);
 
-    for (int i = 0; i < hexString.length(); i += 8) {
-
+    for (int i = 0; i < hexString.length(); i += 8) 
+    {
         int buffer = hexToDec(hexString.substr(i, 8));
         addToCheckSum32(checkSum, buffer);
     }
 
     return checkSum;
-
 }
 
-void printFormat(string text, int checkSumSize) {
-
+void printFormat(string text, int checkSumSize) 
+{
     int checkSum = 0, count = 0;
     string checkSumString;
     stringstream stream;
 
-    if (checkSumSize == 8) {
+    if (checkSumSize == 8) 
+    {
         checkSum = checkSum8(text);
     }
-    else if (checkSumSize == 16) {
+
+    else if (checkSumSize == 16) 
+    {
         checkSum = checkSum16(text);
     }
-    else if (checkSumSize == 32) {
+
+    else if (checkSumSize == 32) 
+    {
         checkSum = checkSum32(text);
     }
 
@@ -183,17 +190,17 @@ void printFormat(string text, int checkSumSize) {
 
     cout << endl;
 
-    for (int i = 0; i < text.length(); i++) {
-        
+    for (int i = 0; i < text.length(); i++) 
+    {
         cout << text[i];
         count++;
 
-        if (count % 80 == 0) {
+        if (count % 80 == 0) 
+        {
             cout << endl;
         }
     }
 
     cout << endl;
     cout << checkSumSize << " bit checksum is " << checkSumString << " for all " << text.length() << " chars" << endl;
-
 }
