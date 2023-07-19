@@ -1,3 +1,27 @@
+/*=============================================================================
+| Assignment: pa02 - Calculating an 8, 16, or 32 bit
+|             checksum on an ASCII input file
+|
+| Author: Farhan Mahbub
+| Language: C++
+|
+| To Compile: g++ -o pa02 pa02.cpp
+|
+| To Execute: C++ -> ./pa02 inputFile.txt 8
+|             where inputFile.txt is an ASCII input file
+|             and the number 8 could also be 16 or 32
+|             which are the valid checksum sizes, all
+|             other values are rejected with an error message
+|             and program termination
+|
+| Note: All input files are simple 8 bit ASCII input
+|
+| Class: CIS3360 - Security in Computing - Summer 2023
+| Instructor: McAlpin
+| Due Date: 7/23/23
+|
++=============================================================================*/
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -204,3 +228,12 @@ void printFormat(string text, int checkSumSize)
     cout << endl;
     cout << checkSumSize << " bit checksum is " << checkSumString << " for all " << text.length() << " chars" << endl;
 }
+
+/*=============================================================================
+| I Farhan Mahbub (fa203667) affirm that this program is
+| entirely my own work and that I have neither developed my code together with
+| any another person, nor copied any code from any other person, nor permitted
+| my code to be copied or otherwise used by any other person, nor have I
+| copied, modified, or otherwise used programs created by others. I acknowledge
+| that any violation of the above terms will be treated as academic dishonesty.
++============================================================================*/
