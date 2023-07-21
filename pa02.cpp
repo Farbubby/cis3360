@@ -30,8 +30,7 @@
 using namespace std;
 
 string readText(string filePath, int checkSumSize);
-string getHexString(string text);
-int hexToDec(string hex);
+int blockNumber(string hex);
 void addToCheckSum8(int &checkSum, int buffer);
 void addToCheckSum16(int &checkSum, int buffer);
 void addToCheckSum32(int &checkSum, int buffer);
@@ -84,48 +83,17 @@ string readText(string filePath, int checkSumSize)
     return text;
 }
 
-string getHexString(string text) 
+int blockNumber(string subString) 
 {
-    string buffer = "";
+    int num = 0;
 
-    for (int i = 0; i < text.length(); i++) 
+    for (int i = 0; i < subString.length(); i++) 
     {
-        if (int(text[i]) == 0x0a) 
-        {
-            buffer += "0a";
-        }
-
-        else 
-        {
-            stringstream stream;
-            stream << hex << int(text[i]);
-            buffer += stream.str();
-        }
+        num += subString[i];
+        if (i != subString.length() - 1) num <<= 8;
     }
 
-    return buffer;
-}
-
-int hexToDec(string hex) 
-{
-    int numDigits = hex.length(), dec = 0, buffer = 0;
-
-    for (int i = 0; i < numDigits; i++) 
-    {
-        if (tolower(hex[i]) >= 'a' && tolower(hex[i]) <= 'f') 
-        {
-            buffer = tolower(hex[i]) - 'a' + 10;
-        }
-
-        else 
-        {
-            buffer = hex[i] - '0';
-        }
-
-        dec = (dec * 16) + buffer;
-    }
-
-    return dec;
+    return num;
 }
 
 void addToCheckSum8(int &checkSum, int buffer) 
@@ -149,11 +117,10 @@ void addToCheckSum32(int &checkSum, int buffer)
 int checkSum8(string text) 
 {
     int checkSum = 0;
-    string hexString = getHexString(text);
 
-    for (int i = 0; i < hexString.length(); i += 2) 
+    for (int i = 0; i < text.length(); i++) 
     {
-        int buffer = hexToDec(hexString.substr(i, 2));
+        int buffer = blockNumber(text.substr(i, 1));
         addToCheckSum8(checkSum, buffer);
     }
 
@@ -163,11 +130,10 @@ int checkSum8(string text)
 int checkSum16(string text) 
 {
     int checkSum = 0;
-    string hexString = getHexString(text);
 
-    for (int i = 0; i < hexString.length(); i += 4) 
+    for (int i = 0; i < text.length(); i += 2) 
     {
-        int buffer = hexToDec(hexString.substr(i, 4));
+        int buffer = blockNumber(text.substr(i, 2));
         addToCheckSum16(checkSum, buffer);
     }
 
@@ -177,11 +143,10 @@ int checkSum16(string text)
 int checkSum32(string text) 
 {
     int checkSum = 0;
-    string hexString = getHexString(text);
 
-    for (int i = 0; i < hexString.length(); i += 8) 
+    for (int i = 0; i < text.length(); i += 4) 
     {
-        int buffer = hexToDec(hexString.substr(i, 8));
+        int buffer = blockNumber(text.substr(i, 4));
         addToCheckSum32(checkSum, buffer);
     }
 
